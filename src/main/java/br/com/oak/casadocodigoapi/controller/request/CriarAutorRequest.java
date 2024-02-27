@@ -23,7 +23,11 @@ public class CriarAutorRequest {
         this.descricao = descricao;
     }
 
-    public Object toModel() {
+    public Autor toModel() {
         return new Autor(this.nome, this.email, this.descricao);
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

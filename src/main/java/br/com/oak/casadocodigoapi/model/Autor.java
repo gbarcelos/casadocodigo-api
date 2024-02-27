@@ -14,14 +14,18 @@ public class Autor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private final String nome;
+    private String nome;
     @NotBlank
     @Email
-    private final String email;
+    private String email;
     @NotBlank
     @Size(min = 1, max = 400)
-    private final String descricao;
-    private final LocalDateTime dataHoraCriacao = LocalDateTime.now();
+    private String descricao;
+    private LocalDateTime dataHoraCriacao = LocalDateTime.now();
+
+    @Deprecated
+    public Autor() {
+    }
 
     public Autor(String nome, String email, String descricao) {
         this.nome = nome;
