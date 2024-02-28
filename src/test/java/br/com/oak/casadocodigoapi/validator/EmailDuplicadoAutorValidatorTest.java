@@ -13,6 +13,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -27,8 +28,8 @@ public class EmailDuplicadoAutorValidatorTest {
     private EmailAutorDuplicadoValidator emailAutorDuplicadoValidator;
 
     @Test
-    @DisplayName("Deve retornar erro quando o email ja existe")
-    public void deveRetornarErroQuandoOEmailJaExiste() {
+    @DisplayName("Deve retornar erro quando o email ja cadastrado")
+    public void deveRetornarErroQuandoOEmailJaCadastrado() {
         //Dado
         when(autorRepository.findByEmail(any())).thenReturn(
                 Optional.of(new Autor("fulano",
@@ -49,4 +50,24 @@ public class EmailDuplicadoAutorValidatorTest {
         assertTrue(errors.hasErrors());
     }
 
+    @Test
+    @DisplayName("Nao deve retornar erro quando o email nao cadastrado")
+    public void naoDeveRetornarErroQuandoEmailNaoCadastrado() {
+        //Dado
+        when(autorRepository.findByEmail(any())).thenReturn(
+                Optional.empty());
+
+        final var criarAutorRequest = new CriarAutorRequest(
+                "beltrano",
+                "fulano@test.com",
+                "descricao do beltrano");
+        final var errors = new BeanPropertyBindingResult(criarAutorRequest,
+                "criarAutorRequest");
+
+        //Quando
+        emailAutorDuplicadoValidator.validate(criarAutorRequest, errors);
+
+        //Entao
+        assertFalse(errors.hasErrors());
+    }
 }
