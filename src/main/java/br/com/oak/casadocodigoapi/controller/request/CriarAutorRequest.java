@@ -1,6 +1,8 @@
 package br.com.oak.casadocodigoapi.controller.request;
 
+import br.com.oak.casadocodigoapi.annotation.UniqueValue;
 import br.com.oak.casadocodigoapi.model.Autor;
+import br.com.oak.casadocodigoapi.model.Categoria;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,6 +13,7 @@ public class CriarAutorRequest {
 
     @NotBlank
     @Email
+    @UniqueValue(domainClass = Autor.class, fieldName = "email")
     private String email;
 
     @NotBlank

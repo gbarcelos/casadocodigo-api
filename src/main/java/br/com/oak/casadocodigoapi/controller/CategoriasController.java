@@ -2,34 +2,27 @@ package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarCategoriaRequest;
 import br.com.oak.casadocodigoapi.model.Categoria;
-import br.com.oak.casadocodigoapi.repository.CategoriaRepository;
-import br.com.oak.casadocodigoapi.validator.NomeCategoriaDuplicadoValidator;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/categorias")
 public class CategoriasController {
 
-    @Autowired
-    private CategoriaRepository repository;
-
-    @Autowired
-    private NomeCategoriaDuplicadoValidator nomeCategoriaDuplicadoValidator;
-
-    @InitBinder
-    public void init(WebDataBinder binder) {
-        binder.addValidators(nomeCategoriaDuplicadoValidator);
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @PostMapping
     @Transactional
     public ResponseEntity<Object> criarCategoria(@RequestBody @Valid CriarCategoriaRequest criarCategoriaRequest) {
-        repository.save(new Categoria(criarCategoriaRequest.getNome()));
+        entityManager.persist(new Categoria(criarCategoriaRequest.getNome()));
         return ResponseEntity.ok().build();
     }
 }
