@@ -19,6 +19,7 @@ import java.time.LocalDate;
 @Table(name = "livros")
 @Entity(name = "Livro")
 public class Livro {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -30,7 +31,7 @@ public class Livro {
   private String sumario;
   @NotNull
   @DecimalMin(value = "20.0")
-  @Digits(integer=3, fraction=2)
+  @Digits(integer = 3, fraction = 2)
   private BigDecimal preco;
   @NotNull
   @Min(value = 100)
@@ -48,6 +49,10 @@ public class Livro {
   @ManyToOne
   @JoinColumn(name = "autor_id", nullable = false)
   private Autor autor;
+
+  @Deprecated
+  public Livro() {
+  }
 
   public Livro(String titulo,
       String resumo,
@@ -67,5 +72,13 @@ public class Livro {
     this.dataPublicacao = dataPublicacao;
     this.categoria = categoria;
     this.autor = autor;
+  }
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public String getTitulo() {
+    return this.titulo;
   }
 }
