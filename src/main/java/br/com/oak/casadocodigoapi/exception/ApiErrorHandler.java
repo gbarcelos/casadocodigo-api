@@ -21,62 +21,64 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 @RestControllerAdvice
 public class ApiErrorHandler {
-    @Autowired
-    private MessageSource messageSource;
 
-    private static final Logger log = LoggerFactory
-            .getLogger(ApiErrorHandler.class);
+  @Autowired
+  private MessageSource messageSource;
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorsDto handleValidationError(MethodArgumentNotValidException exception) {
+  private static final Logger log = LoggerFactory
+      .getLogger(ApiErrorHandler.class);
 
-        List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ErrorsDto handleValidationError(MethodArgumentNotValidException exception) {
 
-        return buildValidationErrors(globalErrors,
-                fieldErrors);
-    }
+    List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
+    List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(BindException.class)
-    public ErrorsDto handleValidationError(BindException exception) {
+    return buildValidationErrors(globalErrors,
+        fieldErrors);
+  }
 
-        List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BindException.class)
+  public ErrorsDto handleValidationError(BindException exception) {
 
-        return buildValidationErrors(globalErrors,
-                fieldErrors);
-    }
+    List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
+    List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ErrorsDto handleValidationError(HttpMessageNotReadableException exception) {
-        log.error("Problema na de desserializar o objeto", exception);
+    return buildValidationErrors(globalErrors,
+        fieldErrors);
+  }
 
-        InvalidFormatException invalidFormat = (InvalidFormatException) exception.getCause();
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ErrorsDto handleValidationError(HttpMessageNotReadableException exception) {
+    log.error("Problema na de desserializar o objeto", exception);
 
-        List<ObjectError> globalErrors = List.of(new ObjectError("", invalidFormat.getValue() + " não é um valor válido"));
-        List<FieldError> fieldErrors = List.of();
+    InvalidFormatException invalidFormat = (InvalidFormatException) exception.getCause();
 
-        return buildValidationErrors(globalErrors,
-                fieldErrors);
-    }
+    List<ObjectError> globalErrors = List.of(
+        new ObjectError("", invalidFormat.getValue() + " não é um valor válido"));
+    List<FieldError> fieldErrors = List.of();
 
-    private ErrorsDto buildValidationErrors(List<ObjectError> globalErrors,
-                                            List<FieldError> fieldErrors) {
-        ErrorsDto validationErrors = new ErrorsDto();
+    return buildValidationErrors(globalErrors,
+        fieldErrors);
+  }
 
-        globalErrors.forEach(error -> validationErrors.addError(getErrorMessage(error)));
+  private ErrorsDto buildValidationErrors(List<ObjectError> globalErrors,
+      List<FieldError> fieldErrors) {
+    ErrorsDto validationErrors = new ErrorsDto();
 
-        fieldErrors.forEach(error -> {
-            String errorMessage = getErrorMessage(error);
-            validationErrors.addFieldError(error.getField(), errorMessage);
-        });
-        return validationErrors;
-    }
+    globalErrors.forEach(error -> validationErrors.addError(getErrorMessage(error)));
 
-    private String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error, LocaleContextHolder.getLocale());
-    }
+    fieldErrors.forEach(error -> {
+      String errorMessage = getErrorMessage(error);
+      validationErrors.addFieldError(error.getField(), errorMessage);
+    });
+    return validationErrors;
+  }
+
+  private String getErrorMessage(ObjectError error) {
+    return messageSource.getMessage(error, LocaleContextHolder.getLocale());
+  }
 }

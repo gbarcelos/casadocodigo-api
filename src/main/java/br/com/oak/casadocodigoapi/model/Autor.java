@@ -27,6 +27,10 @@ public class Autor {
     public Autor() {
     }
 
+    public Autor(Long id) {
+        this.id = id;
+    }
+
     public Autor(String nome, String email, String descricao) {
         this.nome = nome;
         this.email = email;

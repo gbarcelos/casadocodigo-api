@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/autores")
 public class AutoresController {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
-    @PostMapping
-    @Transactional
-    public ResponseEntity<Object> criarAutor(@RequestBody @Valid CriarAutorRequest criarAutorRequest) {
-        entityManager.persist(criarAutorRequest.toModel());
-        return ResponseEntity.ok().build();
-    }
+  @PostMapping
+  @Transactional
+  public ResponseEntity<Object> criarAutor(
+      @RequestBody @Valid CriarAutorRequest criarAutorRequest) {
+    entityManager.persist(criarAutorRequest.toModel());
+    return ResponseEntity.ok().build();
+  }
 }

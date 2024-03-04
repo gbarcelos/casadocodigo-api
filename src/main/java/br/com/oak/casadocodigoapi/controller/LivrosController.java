@@ -1,7 +1,6 @@
 package br.com.oak.casadocodigoapi.controller;
 
-import br.com.oak.casadocodigoapi.controller.request.CriarCategoriaRequest;
-import br.com.oak.casadocodigoapi.model.Categoria;
+import br.com.oak.casadocodigoapi.controller.request.CriarLivroRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -13,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/categorias")
-public class CategoriasController {
+@RequestMapping("/livros")
+public class LivrosController {
 
   @PersistenceContext
   private EntityManager entityManager;
 
   @PostMapping
   @Transactional
-  public ResponseEntity<Object> criarCategoria(
-      @RequestBody @Valid CriarCategoriaRequest criarCategoriaRequest) {
-    entityManager.persist(new Categoria(criarCategoriaRequest.getNome()));
+  public ResponseEntity<Object> criarLivro(
+      @RequestBody @Valid CriarLivroRequest criarLivroRequest) {
+    entityManager.persist(criarLivroRequest.toModel());
     return ResponseEntity.ok().build();
   }
 }
