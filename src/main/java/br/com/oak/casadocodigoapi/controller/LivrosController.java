@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +54,7 @@ public class LivrosController {
     Livro livro = entityManager.find(Livro.class, id);
 
     if (livro == null){
-      throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado");
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado");
     }
 
     return ResponseEntity.ok(new DetalharLivroResponse(livro));
