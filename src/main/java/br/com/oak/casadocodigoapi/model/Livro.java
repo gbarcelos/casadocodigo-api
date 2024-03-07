@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Table(name = "livros")
-@Entity(name = "Livro")
+@Entity
 public class Livro {
 
   @Id
@@ -80,5 +80,29 @@ public class Livro {
 
   public String getTitulo() {
     return this.titulo;
+  }
+
+  public String getResumo() {
+    return resumo;
+  }
+
+  public BigDecimal getPreco() {
+    return preco;
+  }
+
+  public Integer getNumeroDePaginas() {
+    return numeroDePaginas;
+  }
+
+  public String getIsbn() {
+    return isbn;
+  }
+
+  public Categoria getCategoria() {
+    return categoria;
+  }
+
+  public Autor getAutor() {
+    return autor;
   }
 }

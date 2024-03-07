@@ -1,14 +1,17 @@
 package br.com.oak.casadocodigoapi.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 
 @Table(name = "autores")
-@Entity(name = "Autor")
+@Entity
 public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +38,9 @@ public class Autor {
         this.nome = nome;
         this.email = email;
         this.descricao = descricao;
+    }
+
+    public String getNome() {
+        return nome;
     }
 }
