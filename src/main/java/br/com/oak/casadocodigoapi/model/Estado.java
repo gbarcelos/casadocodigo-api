@@ -10,8 +10,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@Table(name = "estados")
 @Entity
+//@Table(name = "estados")
 public class Estado {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,20 @@ public class Estado {
   @JoinColumn(name = "pais_id", nullable = false)
   private Pais pais;
 
+  @Deprecated
+  public Estado() {
+  }
+
+  public Estado(Long id) {
+    this.id = id;
+  }
+
   public Estado(String nome, Pais pais) {
     this.nome = nome;
     this.pais = pais;
+  }
+
+  public boolean pertenceAoPais(Pais pais) {
+    return this.pais.equals(pais);
   }
 }

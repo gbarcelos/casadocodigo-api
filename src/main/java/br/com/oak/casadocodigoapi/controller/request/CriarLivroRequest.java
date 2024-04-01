@@ -1,5 +1,6 @@
 package br.com.oak.casadocodigoapi.controller.request;
 
+import br.com.oak.casadocodigoapi.annotation.ExistsValue;
 import br.com.oak.casadocodigoapi.annotation.UniqueValue;
 import br.com.oak.casadocodigoapi.model.Autor;
 import br.com.oak.casadocodigoapi.model.Categoria;
@@ -40,8 +41,10 @@ public class CriarLivroRequest {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate dataPublicacao;
   @NotNull
+  @ExistsValue(domainClass = Categoria.class)
   private Long categoriaId;
   @NotNull
+  @ExistsValue(domainClass = Autor.class)
   private Long autorId;
 
   public CriarLivroRequest(String titulo, String resumo, String sumario, BigDecimal preco,

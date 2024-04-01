@@ -1,5 +1,6 @@
 package br.com.oak.casadocodigoapi.controller.request;
 
+import br.com.oak.casadocodigoapi.annotation.ExistsValue;
 import br.com.oak.casadocodigoapi.annotation.UniqueValue;
 import br.com.oak.casadocodigoapi.model.Estado;
 import br.com.oak.casadocodigoapi.model.Pais;
@@ -11,6 +12,7 @@ public class CriarEstadoRequest {
   @UniqueValue(domainClass = Estado.class, fieldName = "nome")
   private String nome;
   @NotNull
+  @ExistsValue(domainClass = Pais.class)
   private Long paisId;
 
   public CriarEstadoRequest(String nome, Long paisId) {

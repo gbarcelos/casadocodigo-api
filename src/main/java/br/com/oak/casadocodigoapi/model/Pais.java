@@ -6,9 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import java.util.Objects;
 
-@Table(name = "paises")
 @Entity
+//@Table(name = "paises")
 public class Pais {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +17,10 @@ public class Pais {
   @NotBlank
   private String nome;
   private String codigoIdentificadorPais;
+
+  @Deprecated
+  public Pais() {
+  }
 
   public Pais(String nome, String codigoIdentificadorPais) {
     this.nome = nome;
@@ -25,4 +30,22 @@ public class Pais {
   public Pais(Long id) {
     this.id = id;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Pais pais = (Pais) o;
+    return Objects.equals(id, pais.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }
+

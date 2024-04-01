@@ -15,9 +15,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
-@Table(name = "livros")
 @Entity
+//@Table(name = "livros")
 public class Livro {
 
   @Id
@@ -52,6 +53,10 @@ public class Livro {
 
   @Deprecated
   public Livro() {
+  }
+
+  public Livro(Long id) {
+    this.id = id;
   }
 
   public Livro(String titulo,
@@ -104,5 +109,22 @@ public class Livro {
 
   public Autor getAutor() {
     return autor;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Livro livro = (Livro) o;
+    return Objects.equals(isbn, livro.isbn);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(isbn);
   }
 }
