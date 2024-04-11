@@ -9,7 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 import org.springframework.util.Assert;
 
-public class ExistsValueValidator implements ConstraintValidator<ExistsValue, Long> {
+public class ExistsValueValidator implements ConstraintValidator<ExistsValue, Object> {
 
   private String domainAttribute;
   private Class<?> clazz;
@@ -23,7 +23,7 @@ public class ExistsValueValidator implements ConstraintValidator<ExistsValue, Lo
   }
 
   @Override
-  public boolean isValid(Long value, ConstraintValidatorContext context) {
+  public boolean isValid(Object value, ConstraintValidatorContext context) {
     if (value == null){
       return true;
     }

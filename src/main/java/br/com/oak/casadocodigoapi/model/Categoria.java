@@ -22,11 +22,19 @@ public class Categoria {
         this.id = id;
     }
 
-    public Categoria(String nome) {
+    public Categoria(@NotBlank String nome) {
         this.nome = nome;
     }
 
     public String getNome() {
         return nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Categoria{" +
+            "id=" + id +
+            ", nome='" + nome + '\'' +
+            '}';
     }
 }

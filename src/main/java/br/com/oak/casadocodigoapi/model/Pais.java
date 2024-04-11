@@ -45,5 +45,14 @@ public class Pais {
   public int hashCode() {
     return Objects.hash(id);
   }
+
+  @Override
+  public String toString() {
+    return "Pais{" +
+        "id=" + id +
+        ", nome='" + nome + '\'' +
+        ", codigoIdentificadorPais='" + codigoIdentificadorPais + '\'' +
+        '}';
+  }
 }
 

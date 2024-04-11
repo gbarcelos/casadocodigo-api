@@ -23,7 +23,8 @@ public class CategoriasController {
   @Transactional
   public ResponseEntity<Object> criarCategoria(
       @RequestBody @Valid CriarCategoriaRequest criarCategoriaRequest) {
-    entityManager.persist(new Categoria(criarCategoriaRequest.getNome()));
-    return ResponseEntity.ok().build();
+    Categoria categoria = new Categoria(criarCategoriaRequest.getNome());
+    entityManager.persist(categoria);
+    return ResponseEntity.ok(categoria.toString());
   }
 }

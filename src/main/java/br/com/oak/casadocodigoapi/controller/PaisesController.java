@@ -1,6 +1,7 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarPaisRequest;
+import br.com.oak.casadocodigoapi.model.Pais;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,8 @@ public class PaisesController {
   @Transactional
   public ResponseEntity<Object> criarPais(
       @RequestBody @Valid CriarPaisRequest criarPaisRequest) {
-    entityManager.persist(criarPaisRequest.toModel());
-    return ResponseEntity.ok().build();
+    Pais pais = criarPaisRequest.toModel();
+    entityManager.persist(pais);
+    return ResponseEntity.ok(pais.toString());
   }
 }

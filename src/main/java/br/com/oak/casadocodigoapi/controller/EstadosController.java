@@ -1,6 +1,7 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarEstadoRequest;
+import br.com.oak.casadocodigoapi.model.Estado;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,8 @@ public class EstadosController {
   @Transactional
   public ResponseEntity<Object> criarEstado(
       @RequestBody @Valid CriarEstadoRequest criarEstadoRequest) {
-    entityManager.persist(criarEstadoRequest.toModel());
-    return ResponseEntity.ok().build();
+    Estado estado = criarEstadoRequest.toModel();
+    entityManager.persist(estado);
+    return ResponseEntity.ok(estado.toString());
   }
 }

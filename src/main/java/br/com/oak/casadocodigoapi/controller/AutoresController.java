@@ -1,6 +1,7 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarAutorRequest;
+import br.com.oak.casadocodigoapi.model.Autor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,8 @@ public class AutoresController {
   @Transactional
   public ResponseEntity<Object> criarAutor(
       @RequestBody @Valid CriarAutorRequest criarAutorRequest) {
-    entityManager.persist(criarAutorRequest.toModel());
-    return ResponseEntity.ok().build();
+    Autor autor = criarAutorRequest.toModel();
+    entityManager.persist(autor);
+    return ResponseEntity.ok(autor.toString());
   }
 }

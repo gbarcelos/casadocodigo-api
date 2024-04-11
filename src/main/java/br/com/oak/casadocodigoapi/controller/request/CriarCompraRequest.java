@@ -2,14 +2,17 @@ package br.com.oak.casadocodigoapi.controller.request;
 
 import br.com.oak.casadocodigoapi.annotation.ExistsValue;
 import br.com.oak.casadocodigoapi.model.Compra;
+import br.com.oak.casadocodigoapi.model.Cupom;
 import br.com.oak.casadocodigoapi.model.Estado;
 import br.com.oak.casadocodigoapi.model.Pais;
+import br.com.oak.casadocodigoapi.repository.CupomRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CNPJValidator;
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator;
+import org.springframework.util.StringUtils;
 
 public class CriarCompraRequest {
 
@@ -52,6 +55,9 @@ public class CriarCompraRequest {
   @NotNull
   private CriarPedidoRequest pedido;
 
+  @ExistsValue(domainClass = Cupom.class, fieldName = "codigo")
+  private String codigoCupom;
+
   public CriarCompraRequest(String nome, String sobreNome, String email, String cpfCnpj,
       String telefone, String cep, String endereco, String complemento, String cidade,
       Long estadoId,
@@ -70,7 +76,7 @@ public class CriarCompraRequest {
     this.pedido = pedido;
   }
 
-  public Compra toModel() {
+  public Compra toModel(CupomRepository cupomRepository) {
 
     Compra compra = new Compra(this.nome,
         this.sobreNome,
@@ -86,6 +92,11 @@ public class CriarCompraRequest {
 
     if (estadoId != null) {
       compra.setEstado(new Estado(estadoId));
+    }
+
+    if (StringUtils.hasText(codigoCupom)){
+      Cupom cupom = cupomRepository.findByCodigo(codigoCupom);
+      compra.aplicaCupom(cupom);
     }
 
     return compra;
@@ -113,5 +124,13 @@ public class CriarCompraRequest {
 
   public CriarPedidoRequest getPedido() {
     return pedido;
+  }
+
+  public void setCodigoCupom(String codigoCupom) {
+    this.codigoCupom = codigoCupom;
+  }
+
+  public String getCodigoCupom() {
+    return codigoCupom;
   }
 }

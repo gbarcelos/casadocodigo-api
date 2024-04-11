@@ -7,11 +7,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.util.Assert;
 
 public class CriarPedidoRequest {
 
@@ -38,12 +40,12 @@ public class CriarPedidoRequest {
   }
 
   public Function<Compra, Pedido> toModel() {
-
     Set<ItemPedido> itensModel = itens.stream().map(CriarItensPedidoRequest::toModel).collect(
         Collectors.toSet());
-
     return (compra) -> {
-      return new Pedido(compra, itensModel);
+      Pedido pedido = new Pedido(compra, itensModel);
+      Assert.isTrue(pedido.totalIgual(total),"O total("+total+") enviado não corresponde ao total real("+pedido.total()+"). Itens = "+ itensModel);
+      return pedido;
     };
   }
 }

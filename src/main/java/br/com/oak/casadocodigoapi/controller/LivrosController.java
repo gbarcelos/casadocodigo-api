@@ -31,8 +31,9 @@ public class LivrosController {
   @Transactional
   public ResponseEntity<Object> criarLivro(
       @RequestBody @Valid CriarLivroRequest criarLivroRequest) {
-    entityManager.persist(criarLivroRequest.toModel());
-    return ResponseEntity.ok().build();
+    Livro livro = criarLivroRequest.toModel();
+    entityManager.persist(livro);
+    return ResponseEntity.ok(livro.toString());
   }
 
   @GetMapping

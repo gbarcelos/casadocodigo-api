@@ -1,6 +1,9 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarCompraRequest;
+import br.com.oak.casadocodigoapi.model.Compra;
+import br.com.oak.casadocodigoapi.repository.CupomRepository;
+import br.com.oak.casadocodigoapi.validator.CupomValidoValidator;
 import br.com.oak.casadocodigoapi.validator.DocumentoCpfOuCnpjValidator;
 import br.com.oak.casadocodigoapi.validator.EstadoPertenceAoPaisValidator;
 import br.com.oak.casadocodigoapi.validator.TotalItensCarrinhoValidator;
@@ -25,7 +28,13 @@ public class ComprasController {
   private EntityManager entityManager;
 
   @Autowired
+  private CupomRepository cupomRepository;
+
+  @Autowired
   private EstadoPertenceAoPaisValidator estadoPertenceAoPaisValidator;
+
+  @Autowired
+  private CupomValidoValidator cupomValidoValidator;
 
   @InitBinder
   public void init(WebDataBinder binder){
@@ -33,13 +42,15 @@ public class ComprasController {
     binder.addValidators(estadoPertenceAoPaisValidator);
     //binder.addValidators(paisTemEstadoValidator);
     binder.addValidators(new TotalItensCarrinhoValidator());
+    binder.addValidators(cupomValidoValidator);
   }
 
   @PostMapping
   @Transactional
   public ResponseEntity<Object> criarCompra(
       @RequestBody @Valid CriarCompraRequest criarCompraRequest) {
-    entityManager.persist(criarCompraRequest.toModel());
-    return ResponseEntity.ok().build();
+    Compra compra = criarCompraRequest.toModel(cupomRepository);
+    entityManager.persist(compra);
+    return ResponseEntity.ok(compra.toString());
   }
 }

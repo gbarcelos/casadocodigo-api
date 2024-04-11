@@ -24,16 +24,42 @@ public class Cupom {
 
   @NotNull
   @Positive
-  private BigDecimal percentual;
+  private BigDecimal percentualDesconto;
 
   @NotNull
   @Future
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate dataValidade;
 
-  public Cupom(String codigo, BigDecimal percentual, LocalDate dataValidade) {
+  @Deprecated
+  public Cupom() {
+  }
+
+  public Cupom(String codigo, BigDecimal percentualDesconto, LocalDate dataValidade) {
     this.codigo = codigo;
-    this.percentual = percentual;
+    this.percentualDesconto = percentualDesconto;
     this.dataValidade = dataValidade;
+  }
+
+  public boolean isValido() {
+    return LocalDate.now().compareTo(this.dataValidade) <= 0;
+  }
+
+  public BigDecimal getPercentualDesconto() {
+    return percentualDesconto;
+  }
+
+  public LocalDate getDataValidade() {
+    return dataValidade;
+  }
+
+  @Override
+  public String toString() {
+    return "Cupom{" +
+        "id=" + id +
+        ", codigo='" + codigo + '\'' +
+        ", percentualDesconto=" + percentualDesconto +
+        ", dataValidade=" + dataValidade +
+        '}';
   }
 }

@@ -11,34 +11,45 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Autor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotBlank
-    private String nome;
-    @NotBlank
-    @Email
-    private String email;
-    @NotBlank
-    @Size(min = 1, max = 400)
-    private String descricao;
-    private LocalDateTime dataHoraCriacao = LocalDateTime.now();
 
-    @Deprecated
-    public Autor() {
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  @NotBlank
+  private String nome;
+  @NotBlank
+  @Email
+  private String email;
+  @NotBlank
+  @Size(min = 1, max = 400)
+  private String descricao;
+  private LocalDateTime dataHoraCriacao = LocalDateTime.now();
 
-    public Autor(Long id) {
-        this.id = id;
-    }
+  @Deprecated
+  public Autor() {
+  }
 
-    public Autor(String nome, String email, String descricao) {
-        this.nome = nome;
-        this.email = email;
-        this.descricao = descricao;
-    }
+  public Autor(Long id) {
+    this.id = id;
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public Autor(@NotBlank String nome, @NotBlank
+  @Email String email, @NotBlank
+  @Size(min = 1, max = 400) String descricao) {
+    this.nome = nome;
+    this.email = email;
+    this.descricao = descricao;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  @Override
+  public String toString() {
+    return "Autor{" +
+        "id=" + id +
+        ", nome='" + nome + '\'' +
+        '}';
+  }
 }

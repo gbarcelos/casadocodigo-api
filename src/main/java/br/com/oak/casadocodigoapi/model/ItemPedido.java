@@ -27,8 +27,8 @@ public class ItemPedido {
     this.preco = livro.getPreco();
   }
 
-  public BigDecimal total() {
-    return preco.multiply(new BigDecimal(quantidade));
+  public int getQuantidade() {
+    return quantidade;
   }
 
   @Override
@@ -46,5 +46,14 @@ public class ItemPedido {
   @Override
   public int hashCode() {
     return Objects.hash(livro);
+  }
+
+  @Override
+  public String toString() {
+    return "ItemPedido{" +
+        "livro=" + livro +
+        ", quantidade=" + quantidade +
+        ", preco=" + preco +
+        '}';
   }
 }

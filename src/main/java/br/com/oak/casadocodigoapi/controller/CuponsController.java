@@ -1,6 +1,7 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarCupomRequest;
+import br.com.oak.casadocodigoapi.model.Cupom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,8 @@ public class CuponsController {
   @Transactional
   public ResponseEntity<Object> criarCupom(
       @RequestBody @Valid CriarCupomRequest criarCupomRequest) {
-    entityManager.persist(criarCupomRequest.toModel());
-    return ResponseEntity.ok().build();
+    Cupom cupom = criarCupomRequest.toModel();
+    entityManager.persist(cupom);
+    return ResponseEntity.ok(cupom.toString());
   }
 }

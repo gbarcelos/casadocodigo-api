@@ -125,4 +125,16 @@ public class Livro {
   public int hashCode() {
     return Objects.hash(isbn);
   }
+
+  @Override
+  public String toString() {
+    return "Livro{" +
+        "id=" + id +
+        ", titulo='" + titulo + '\'' +
+        ", preco=" + preco +
+        ", isbn='" + isbn + '\'' +
+        ", categoria=" + categoria +
+        ", autor=" + autor +
+        '}';
+  }
 }
