@@ -3,6 +3,7 @@ package br.com.oak.casadocodigoapi.controller.request;
 import br.com.oak.casadocodigoapi.annotation.ExistsValue;
 import br.com.oak.casadocodigoapi.model.ItemPedido;
 import br.com.oak.casadocodigoapi.model.Livro;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -29,7 +30,8 @@ public class CriarItensPedidoRequest {
     return quantidade;
   }
 
-  public ItemPedido toModel() {
-    return new ItemPedido(new Livro(livroId), quantidade);
+  public ItemPedido toModel(EntityManager entityManager) {
+    Livro livro = entityManager.find(Livro.class, livroId);
+    return new ItemPedido(livro, quantidade);
   }
 }

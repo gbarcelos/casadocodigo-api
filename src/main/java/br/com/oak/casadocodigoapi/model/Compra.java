@@ -49,11 +49,15 @@ public class Compra {
   @JoinColumn(name = "estado_id")
   private Estado estado;
 
-  @OneToOne(mappedBy = "compra",cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST)
   private Pedido pedido;
 
   @Embedded
   private CupomAplicado cupomAplicado;
+
+  @Deprecated
+  public Compra() {
+  }
 
   public Compra(String nome, String sobreNome, String email, String cpfCnpj,
       String telefone,
@@ -70,6 +74,114 @@ public class Compra {
     this.cidade = cidade;
     this.pais = pais;
     this.pedido = criacaoPedidoFunction.apply(this);
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public String getSobreNome() {
+    return sobreNome;
+  }
+
+  public void setSobreNome(String sobreNome) {
+    this.sobreNome = sobreNome;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getCpfCnpj() {
+    return cpfCnpj;
+  }
+
+  public void setCpfCnpj(String cpfCnpj) {
+    this.cpfCnpj = cpfCnpj;
+  }
+
+  public String getTelefone() {
+    return telefone;
+  }
+
+  public void setTelefone(String telefone) {
+    this.telefone = telefone;
+  }
+
+  public String getCep() {
+    return cep;
+  }
+
+  public void setCep(String cep) {
+    this.cep = cep;
+  }
+
+  public String getEndereco() {
+    return endereco;
+  }
+
+  public void setEndereco(String endereco) {
+    this.endereco = endereco;
+  }
+
+  public String getComplemento() {
+    return complemento;
+  }
+
+  public void setComplemento(String complemento) {
+    this.complemento = complemento;
+  }
+
+  public String getCidade() {
+    return cidade;
+  }
+
+  public void setCidade(String cidade) {
+    this.cidade = cidade;
+  }
+
+  public Pais getPais() {
+    return pais;
+  }
+
+  public void setPais(Pais pais) {
+    this.pais = pais;
+  }
+
+  public Estado getEstado() {
+    return estado;
+  }
+
+  public Pedido getPedido() {
+    return pedido;
+  }
+
+  public void setPedido(Pedido pedido) {
+    this.pedido = pedido;
+  }
+
+  public CupomAplicado getCupomAplicado() {
+    return cupomAplicado;
+  }
+
+  public void setCupomAplicado(CupomAplicado cupomAplicado) {
+    this.cupomAplicado = cupomAplicado;
   }
 
   public void setEstado(Estado estado) {

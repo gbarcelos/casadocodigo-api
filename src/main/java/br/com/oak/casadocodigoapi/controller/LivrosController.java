@@ -1,8 +1,8 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarLivroRequest;
-import br.com.oak.casadocodigoapi.controller.response.DetalharLivroResponse;
-import br.com.oak.casadocodigoapi.controller.response.ListarLivrosResponse;
+import br.com.oak.casadocodigoapi.controller.response.LivroResponse;
+import br.com.oak.casadocodigoapi.controller.response.LivrosResponse;
 import br.com.oak.casadocodigoapi.model.Livro;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,28 +29,28 @@ public class LivrosController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<Object> criarLivro(
+  public ResponseEntity<LivroResponse> criarLivro(
       @RequestBody @Valid CriarLivroRequest criarLivroRequest) {
     Livro livro = criarLivroRequest.toModel();
     entityManager.persist(livro);
-    return ResponseEntity.ok(livro.toString());
+    return ResponseEntity.ok(new LivroResponse(livro));
   }
 
   @GetMapping
-  public ResponseEntity<List<ListarLivrosResponse>> listarLivros() {
+  public ResponseEntity<List<LivrosResponse>> listarLivros() {
     Query queryLivros = entityManager.createQuery("select l from Livro l");
 
     List<Livro> resultList = queryLivros.getResultList();
 
-    List<ListarLivrosResponse> listarLivrosResponse = resultList.stream()
-        .map(ListarLivrosResponse::new)
+    List<LivrosResponse> listarLivrosResponse = resultList.stream()
+        .map(LivrosResponse::new)
         .toList();
 
     return ResponseEntity.ok(listarLivrosResponse);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<DetalharLivroResponse> detalharLivro(@PathVariable Long id) {
+  public ResponseEntity<LivroResponse> detalharLivro(@PathVariable Long id) {
 
     Livro livro = entityManager.find(Livro.class, id);
 
@@ -58,6 +58,6 @@ public class LivrosController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado");
     }
 
-    return ResponseEntity.ok(new DetalharLivroResponse(livro));
+    return ResponseEntity.ok(new LivroResponse(livro));
   }
 }

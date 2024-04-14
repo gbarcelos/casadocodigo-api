@@ -31,6 +31,10 @@ public class ItemPedido {
     return quantidade;
   }
 
+  public BigDecimal total() {
+    return preco.multiply(new BigDecimal(quantidade));
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -29,6 +29,10 @@ public class Pedido {
   @ElementCollection
   private @Size(min = 1) Set<ItemPedido> itens = new HashSet<>();
 
+  @Deprecated
+  public Pedido() {
+  }
+
   public Pedido(@NotNull @Valid Compra compra,
       @Size(min = 1) Set<ItemPedido> itens) {
     Assert.isTrue(itens.iterator().hasNext(),
@@ -43,6 +47,11 @@ public class Pedido {
 
   public boolean totalIgual(@Positive @NotNull Integer valor) {
     return total().compareTo(valor) != 0;
+  }
+
+  public BigDecimal totalCompra() {
+    return itens.stream().map(ItemPedido::total).reduce(BigDecimal.ZERO,
+        (atual, proximo) -> atual.add(proximo));
   }
 
   @Override

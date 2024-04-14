@@ -3,11 +3,11 @@ package br.com.oak.casadocodigoapi.controller.request;
 import br.com.oak.casadocodigoapi.model.Compra;
 import br.com.oak.casadocodigoapi.model.ItemPedido;
 import br.com.oak.casadocodigoapi.model.Pedido;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,13 +39,11 @@ public class CriarPedidoRequest {
     return itens;
   }
 
-  public Function<Compra, Pedido> toModel() {
-    Set<ItemPedido> itensModel = itens.stream().map(CriarItensPedidoRequest::toModel).collect(
+  public Function<Compra, Pedido> toModel(EntityManager entityManager) {
+    Set<ItemPedido> itensModel = itens.stream().map(item -> item.toModel(entityManager)).collect(
         Collectors.toSet());
     return (compra) -> {
-      Pedido pedido = new Pedido(compra, itensModel);
-      Assert.isTrue(pedido.totalIgual(total),"O total("+total+") enviado não corresponde ao total real("+pedido.total()+"). Itens = "+ itensModel);
-      return pedido;
+      return new Pedido(compra, itensModel);
     };
   }
 }

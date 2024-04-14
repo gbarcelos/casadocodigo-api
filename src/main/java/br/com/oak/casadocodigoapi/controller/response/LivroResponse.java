@@ -2,7 +2,7 @@ package br.com.oak.casadocodigoapi.controller.response;
 
 import br.com.oak.casadocodigoapi.model.Livro;
 
-public class DetalharLivroResponse {
+public class LivroResponse {
 
   private Long id;
   private String titulo;
@@ -14,7 +14,7 @@ public class DetalharLivroResponse {
   private String autor;
 
 
-  public DetalharLivroResponse(Livro livro) {
+  public LivroResponse(Livro livro) {
     this.id = livro.getId();
     this.titulo= livro.getTitulo();
     this.resumo = livro.getResumo();

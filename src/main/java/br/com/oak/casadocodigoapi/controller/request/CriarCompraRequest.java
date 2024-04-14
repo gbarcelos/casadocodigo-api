@@ -6,6 +6,7 @@ import br.com.oak.casadocodigoapi.model.Cupom;
 import br.com.oak.casadocodigoapi.model.Estado;
 import br.com.oak.casadocodigoapi.model.Pais;
 import br.com.oak.casadocodigoapi.repository.CupomRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -76,7 +77,7 @@ public class CriarCompraRequest {
     this.pedido = pedido;
   }
 
-  public Compra toModel(CupomRepository cupomRepository) {
+  public Compra toModel(EntityManager entityManager, CupomRepository cupomRepository) {
 
     Compra compra = new Compra(this.nome,
         this.sobreNome,
@@ -88,7 +89,7 @@ public class CriarCompraRequest {
         this.complemento,
         this.cidade,
         new Pais(this.paisId),
-        pedido.toModel());
+        pedido.toModel(entityManager));
 
     if (estadoId != null) {
       compra.setEstado(new Estado(estadoId));

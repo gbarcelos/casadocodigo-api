@@ -1,6 +1,7 @@
 package br.com.oak.casadocodigoapi.controller;
 
 import br.com.oak.casadocodigoapi.controller.request.CriarCompraRequest;
+import br.com.oak.casadocodigoapi.controller.response.CompraResponse;
 import br.com.oak.casadocodigoapi.model.Compra;
 import br.com.oak.casadocodigoapi.repository.CupomRepository;
 import br.com.oak.casadocodigoapi.validator.CupomValidoValidator;
@@ -12,13 +13,17 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/compras")
@@ -37,7 +42,7 @@ public class ComprasController {
   private CupomValidoValidator cupomValidoValidator;
 
   @InitBinder
-  public void init(WebDataBinder binder){
+  public void init(WebDataBinder binder) {
     binder.addValidators(new DocumentoCpfOuCnpjValidator());
     binder.addValidators(estadoPertenceAoPaisValidator);
     //binder.addValidators(paisTemEstadoValidator);
@@ -47,10 +52,23 @@ public class ComprasController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<Object> criarCompra(
+  public ResponseEntity<CompraResponse> criarCompra(
       @RequestBody @Valid CriarCompraRequest criarCompraRequest) {
-    Compra compra = criarCompraRequest.toModel(cupomRepository);
+    Compra compra = criarCompraRequest.toModel(entityManager, cupomRepository);
     entityManager.persist(compra);
-    return ResponseEntity.ok(compra.toString());
+    return ResponseEntity.ok(new CompraResponse(compra));
   }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<CompraResponse> detalharCompra(@PathVariable Long id) {
+
+    Compra compra = entityManager.find(Compra.class, id);
+
+    if (compra == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra não encontrada");
+    }
+
+    return ResponseEntity.ok(new CompraResponse(compra));
+  }
+
 }
