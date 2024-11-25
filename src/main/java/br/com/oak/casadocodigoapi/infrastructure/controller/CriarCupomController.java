@@ -1,30 +1,27 @@
 package br.com.oak.casadocodigoapi.infrastructure.controller;
 
-import br.com.oak.casadocodigoapi.infrastructure.controller.request.CriarCupomRequest;
+import br.com.oak.casadocodigoapi.application.cupom.CriarCupom;
 import br.com.oak.casadocodigoapi.domain.Cupom;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
+import br.com.oak.casadocodigoapi.infrastructure.controller.request.CriarCupomRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cupons")
-public class CuponsController {
+public class CriarCupomController {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final CriarCupom criarCupom;
 
-  @PostMapping
-  @Transactional
+  public CriarCupomController(CriarCupom criarCupom) {
+    this.criarCupom = criarCupom;
+  }
+
+  @PostMapping(value = "/cupons")
   public ResponseEntity<Object> criarCupom(
       @RequestBody @Valid CriarCupomRequest criarCupomRequest) {
-    Cupom cupom = criarCupomRequest.toModel();
-    entityManager.persist(cupom);
+    Cupom cupom = criarCupom.execute(criarCupomRequest);
     return ResponseEntity.ok(cupom.toString());
   }
 }

@@ -27,12 +27,12 @@ public class EstadoPertenceAoPaisValidator implements Validator {
     }
     CriarCompraRequest request = (CriarCompraRequest) target;
 
-    if (request.getEstadoId() == null) {
+    if (request.estadoId() == null) {
       return;
     }
 
-    Pais pais = entityManager.find(Pais.class, request.getPaisId());
-    Estado estado = entityManager.find(Estado.class, request.getEstadoId());
+    Pais pais = entityManager.find(Pais.class, request.paisId());
+    Estado estado = entityManager.find(Estado.class, request.estadoId());
 
     if (!estado.pertenceAoPais(pais)) {
       errors.rejectValue("estadoId", "EstadoPertenceAoPais.criarCompraRequest.estadoId");

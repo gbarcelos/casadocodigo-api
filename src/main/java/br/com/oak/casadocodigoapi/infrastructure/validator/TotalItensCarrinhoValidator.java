@@ -20,7 +20,7 @@ public class TotalItensCarrinhoValidator implements Validator {
     }
     CriarCompraRequest request = (CriarCompraRequest) target;
 
-    CriarPedidoRequest pedido = request.getPedido();
+    CriarPedidoRequest pedido = request.pedido();
     Integer totalCarrinho = pedido.getTotal();
     Integer totalCalculado = pedido.getItens().stream()
         .map(CriarItensPedidoRequest::getQuantidade)

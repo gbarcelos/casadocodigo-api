@@ -27,11 +27,11 @@ public class CupomValidoValidator implements Validator {
     }
     CriarCompraRequest request = (CriarCompraRequest) target;
 
-    if (!StringUtils.hasText(request.getCodigoCupom())) {
+    if (!StringUtils.hasText(request.codigoCupom())) {
       return;
     }
 
-    Cupom cupom = cupomRepository.findByCodigo(request.getCodigoCupom());
+    Cupom cupom = cupomRepository.findByCodigo(request.codigoCupom());
     if (!cupom.isValido()) {
       errors.rejectValue("codigoCupom", "CupomValido.criarCompraRequest.codigoCupom");
     }

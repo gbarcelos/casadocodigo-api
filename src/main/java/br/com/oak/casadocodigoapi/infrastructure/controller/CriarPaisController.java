@@ -1,30 +1,27 @@
 package br.com.oak.casadocodigoapi.infrastructure.controller;
 
-import br.com.oak.casadocodigoapi.infrastructure.controller.request.CriarPaisRequest;
+import br.com.oak.casadocodigoapi.application.pais.CriarPais;
 import br.com.oak.casadocodigoapi.domain.Pais;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
+import br.com.oak.casadocodigoapi.infrastructure.controller.request.CriarPaisRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/paises")
-public class PaisesController {
+public class CriarPaisController {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final CriarPais criarPais;
 
-  @PostMapping
-  @Transactional
+  public CriarPaisController(CriarPais criarPais) {
+    this.criarPais = criarPais;
+  }
+
+  @PostMapping(value = "/paises")
   public ResponseEntity<Object> criarPais(
       @RequestBody @Valid CriarPaisRequest criarPaisRequest) {
-    Pais pais = criarPaisRequest.toModel();
-    entityManager.persist(pais);
+    Pais pais = criarPais.execute(criarPaisRequest);
     return ResponseEntity.ok(pais.toString());
   }
 }
